@@ -1,0 +1,184 @@
+---
+title: "`r params$doctitle`"
+params:
+  doctitle: "**Data Mining/Discovery Techniques**"
+  subtitle: "Knowledge Assessment *(Week X)*"
+  lecturer: "João Caldeira"
+  email: "jcaldeira@uatlantica.pt"
+  role: "Invited Professor"
+  university: "Univ. Atlântica"
+  brand: "ua.jpg"
+  flavour: "GROUP 1"
+  file: "4"
+author: 
+- \ **`r params$lecturer`**^[`r params$role`. LinkedIn. https://www.linkedin.com/in/joao-carlos-caldeira/], [*`r params$email`*](mailto:`r params$email`), **`r params$university`**
+# name: João Caldeira^[Invited Professor. https://www.linkedin.com/in/joao-carlos-caldeira/]
+# email: jcaldeira@uatlantica.pt
+# affiliation: Univ. ATLANTICA
+date: "`r format(Sys.time(), '%d %B %Y')`"
+header-includes:
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \fancyhead[L]{\includegraphics[width=2.5cm]{`r params$brand`}}
+- \fancyhead[C]{`r params$flavour` (`r format(Sys.time(), '%Y-%m-%d')`)}
+- \fancyfoot[C]{`r params$doctitle`}
+- \fancyfoot[L]{Copyright@`r format(Sys.time(), '%Y')`}
+- \fancyfoot[R]{\thepage}
+#abstract: This is the abstract.
+output:
+  pdf_document: 
+    toc: yes
+    fig_caption: yes
+  html_document: 
+    toc: yes
+    toc_float: yes
+    number_sections: yes
+    theme: cosmo
+  word_document:
+    toc: yes
+    toc_depth: '3'
+    number_sections: yes
+  html_notebook: 
+    toc: yes
+    toc_float: yes
+    fig_caption: yes
+    theme: cosmo
+subtitle: \ `r params$subtitle`
+tags:
+- data mining
+- knowledge discovery
+- exploratory data analysis
+- data preprocessing
+---
+
+\newpage
+
+```{r setup, eval=FALSE, echo=FALSE}
+```
+
+
+```{r load, warning=FALSE,message=FALSE,echo=FALSE,eval=TRUE}
+library(readxl)
+```
+
+```{r preprocess, eval = TRUE, echo=FALSE}
+# Base/Root folder where your files are located
+# Change this path to the root folder where your datasets are
+
+repository.path <- "./datasets"
+
+#Get the files in the repository folder based on the extension patterns defined
+repository.files <- list.files(path = repository.path, 
+                               pattern = '.csv$|.xls$|.xlsx$', 
+                               recursive = T, 
+                               full.names = T) 
+
+files.id <- seq(1,length(repository.files))
+files.filename <- sub(".*/", "", repository.files)
+
+files.name <- sub("\\..*", "", files.filename)
+substr(files.name, 1, 1) <- toupper(substr(files.name, 1, 1))
+
+files.folder <- sub(repository.path, "", repository.files)
+files.folder <- sub("/[^/]+$", "", files.folder)
+
+files.extension <- substring(repository.files, nchar(repository.files)-3)
+files.extension <- sub("\\.","",files.extension)
+
+files.size <- file.size(repository.files)
+files.fullpath <- repository.files
+
+
+datasets.metadata <- data.frame(id = files.id, 
+                                dataset = files.name, 
+                                filename = files.filename, 
+                                type = files.extension,
+                                size = files.size,
+                                folder = files.folder,
+                                fullpath = files.fullpath,
+                                date = Sys.time() )
+
+```
+
+
+```{r eval = FALSE, echo=FALSE}
+head(datasets.metadata)
+```
+
+
+```{r  eval = FALSE, echo=FALSE}
+tail(datasets.metadata)
+```
+
+
+# Avaliação Teórica
+```{r  eval = TRUE, echo=FALSE}
+
+# Assessment id based on the dataframe "dataset.metadata"
+print.glance <- TRUE
+print.questions <- TRUE
+print.solutions <- TRUE
+assessment.id <- params$file
+assessment.questions <- 49
+
+assessment.file <- datasets.metadata[datasets.metadata$id == assessment.id,]$fullpath
+assessment <- read_excel(assessment.file)
+#assessment <- assessment[!is.na(assessment$id),]
+assessment <- assessment[assessment$enabled=="T",]
+practice <- assessment[assessment$part=="X - Practice",]
+assessment <- assessment[assessment$part!="X - Practice",]
+
+#sample <- sort(sample(1:nrow(assessment), assessment.questions, replace=F), decreasing = F)
+
+
+#assessment <- assessment[sample,]
+assessment$id <- seq(1:nrow(assessment))
+```
+
+## Soluções
+
+```{r eval = print.questions, echo=FALSE, results='asis'}
+#cat("  \\newpage")
+#cat("  ## Questions")
+unique.parts <- unique(assessment$part)
+for (k in 1:length(unique.parts)) {
+  cat(paste0("  \n\n","**","Part ",unique.parts[k],"**","  \n"))
+  #part.unique.questions <- assessment[assessment$part==unique.parts[k],c("id","question","comments")]
+  #part.unique.questions <- unique(part.unique.questions)
+  part.unique.questions <- unique(assessment[assessment$part==unique.parts[k],])
+
+ for (i in 1:nrow(part.unique.questions)) { 
+    #cat(paste0("  \n### ","**",i, "-", unique.questions[i,]$question,"**"))
+    
+   if (!is.na(part.unique.questions[i,]$question_pt)) { 
+       cat(paste0("  \n","**",part.unique.questions[i,]$id,". ",part.unique.questions[i,]$question_en, " / ", part.unique.questions[i,]$question_pt,"**"," *",part.unique.questions[i,]$comments,"*")) 
+   } else {
+     cat(paste0("  \n","**",part.unique.questions[i,]$id,". ",part.unique.questions[i,]$question_en,"**"," *",part.unique.questions[i,]$comments,"*"))
+   }
+       
+    answers_en <- unlist(strsplit(part.unique.questions$answer_en[i],","))
+    answers_pt <- unlist(strsplit(part.unique.questions$answer_pt[i],","))
+    
+    corrections<- unlist(strsplit(part.unique.questions$correction[i],","))
+    
+    for (j in 1:length(answers_en)) { 
+      #cat(paste0("  \n#### ","*",letters[j],") ",answers[j,]$answer,"*"))
+       if (!is.na(answers_pt[j])) {
+          if (corrections[j] == "T") {cat(paste0("  \n","***",letters[j],") ",answers_en[j]," / ",answers_pt[j]," (Correct) ***"))}
+           else {cat(paste0("  \n","*",letters[j],") ",answers_en[j]," / ",answers_pt[j],"*"))}
+          
+       } else {
+        
+           if (corrections[j] == "T") {cat(paste0("  \n","***",letters[j],") ",answers_en[j]," (Correct) ***"))}
+          else { cat(paste0("  \n","*",letters[j],") ",answers_en[j],"*")) }
+        
+       }
+    }
+  cat(paste0("\n\n"))
+  cat("  \\  ")
+ }
+
+cat("  \\")
+}
+```
+

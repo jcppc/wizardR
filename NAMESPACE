@@ -1,0 +1,9 @@
+exportPattern("^[[:alpha:]]+")
+
+#Functions to export
+export(render.assessments)
+export(render.solutions)
+
+#Libraries to import
+#import(openxlsx)
+#import(fuzzymineR)

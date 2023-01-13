@@ -1,0 +1,17 @@
+Package: wizardR
+Type: Package
+Title: A Package in R to generate assessment documents from a list of questions using randomization methods.
+Version: 1.0.0
+Author: João Caldeira
+Maintainer: João Caldeira <jcppc@iscte-iul.pt>
+Description: - This package, reads an excel spreadsheet with questions and answers and produce a professional assessment document with randomized questions.
+    - It also generates the solutions document
+    - Produce branded documents
+    - Render the data into pdf documents
+Depends: R (>= 4.2.2)
+License: GPL
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: readxl
+Remotes: nirmalpatel/fuzzymineR
