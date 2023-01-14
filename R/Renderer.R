@@ -20,7 +20,7 @@ if (!dir.exists( output.dir )) {dir.create( output.dir )}
 for (i in 1:flavours) {
 
   rmarkdown::render(
-    "Assessment.Rmd",
+    "./Assessment.Rmd",
     params = list(brand = schools[school,]$brand,
                   university = schools[school,]$university,
                   doctitle = schools[school,]$class,
@@ -45,7 +45,7 @@ for (i in 1:flavours) {
 render.solutions <- function( ) {
 
 rmarkdown::render(
-    "Solutions.Rmd",
+    "./Solutions.Rmd",
     params = list(brand = schools[school,]$brand,
                   university = schools[school,]$university,
                   doctitle = schools[school,]$class,
