@@ -19,8 +19,7 @@ if (!dir.exists( output.dir )) {dir.create( output.dir )}
 
 for (i in 1:flavours) {
 
-  rmarkdown::render(
-    "R/Assessment.Rmd",
+  rmarkdown::render( input = system.file("rmd", "Assessment.Rmd", package = "wizardR"),
     params = list(brand = schools[school,]$brand,
                   university = schools[school,]$university,
                   doctitle = schools[school,]$class,
@@ -44,8 +43,7 @@ for (i in 1:flavours) {
 
 render.solutions <- function( ) {
 
-rmarkdown::render(
-    "R/Solutions.Rmd",
+rmarkdown::render( input = system.file("rmd", "Solutions.Rmd", package = "wizardR"),
     params = list(brand = schools[school,]$brand,
                   university = schools[school,]$university,
                   doctitle = schools[school,]$class,

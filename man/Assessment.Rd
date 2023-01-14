@@ -1,6 +1,6 @@
 \name{render.assessments}
 \alias{render.assessments}
-\title{Generate assessment documents}
+\title{Generate assessment documents based on a list of questions}
 \usage{
 assessment( input,
                    case_id = "case",
@@ -11,7 +11,7 @@ assessment( input,
                    graph_palette = "Greens" )
 }
 \description{
-Prints Hello, from SPOTS v.1.0.0"
+Generate assessment documents based on a list of questions (using an Excel spreadsheet)
 }
 
 \examples{
