@@ -1,5 +1,3 @@
-
-
 #schools = data.frame(university = c("Univ. Atlântica", "ISCTE-IUL","ISTEC"),
 #                     brand = c("ua.jpg", "iscte.png", "istec.png"),
 #                     email = c("jcaldeira@uatlantica.pt","jcppc@iscte-iul.pt","joaocarlos.caldeira@my.istec.pt"),
@@ -11,11 +9,51 @@
 #school <- 3
 #exam.flavours <- 4
 
+render.assessments2 <- function( assessment, number.of.questions, output.base.dir) {
+
+  #file, university, lecturer, email, role, class, assessment.name, brand, flavours,
+
+  output.dir <- paste0(output.base.dir,"/",assessment$university,"/")
+
+  if (!dir.exists( output.dir )) {dir.create( output.dir )}
+
+  #header <- system.file("rmd/frontpage.tex", package = "wizardR")
+  #args <- pandoc_variable_arg("cover", system.file("rmd/cover.png", package = "wizardR"))
+
+  for (i in 1:assessment$flavours) {
+
+    rmarkdown::render( input = system.file("rmd", "Assessment.Rmd", package = "wizardR"),
+                       params = list(brand = assessment$brand,
+                                     university = assessment$university,
+                                     doctitle = assessment$class,
+                                     file = assessment$file,
+                                     email = assessment$email,
+                                     role = assessment$role,
+                                     flavour = paste0("GROUP ", i),
+                                     subtitle = assessment$assessment.name,
+                                     questions = number.of.questions),
+                       intermediates_dir = "./temp",
+                       output_dir = output.dir,
+                       output_file = paste0(assessment$university,"-Group-",i,"-Exam-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
+                       #includes = rmarkdown::includes(in_header = header),
+                       #pandoc_args = args,
+                       #run_pandoc = TRUE,
+                       quiet=TRUE,
+                       clean=TRUE
+    )
+  }
+
+
+}
+
 render.assessments <- function( file, university, lecturer, email, role, class, assessment.name, brand, flavours, questions.number, output.base.dir) {
 
 output.dir <- paste0(output.base.dir,"/",schools[school,]$university,"/")
 
 if (!dir.exists( output.dir )) {dir.create( output.dir )}
+
+#header <- system.file("rmd/frontpage.tex", package = "wizardR")
+#args <- pandoc_variable_arg("cover", system.file("rmd/cover.png", package = "wizardR"))
 
 for (i in 1:flavours) {
 
@@ -32,6 +70,9 @@ for (i in 1:flavours) {
     intermediates_dir = "./temp",
     output_dir = output.dir,
     output_file = paste0(schools[school,]$university,"-Group-",i,"-Exam-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
+    #includes = rmarkdown::includes(in_header = header),
+    #pandoc_args = args,
+    #run_pandoc = TRUE,
     quiet=TRUE,
     clean=TRUE
   )
@@ -41,7 +82,11 @@ for (i in 1:flavours) {
 }
 
 
-render.solutions <- function( ) {
+render.solutions <- function( file, university, lecturer, email, role, class, assessment.name, brand, output.base.dir ) {
+
+  output.dir <- paste0(output.base.dir,"/",schools[school,]$university,"/")
+
+  if (!dir.exists( output.dir )) {dir.create( output.dir )}
 
 rmarkdown::render( input = system.file("rmd", "Solutions.Rmd", package = "wizardR"),
     params = list(brand = schools[school,]$brand,
@@ -53,7 +98,7 @@ rmarkdown::render( input = system.file("rmd", "Solutions.Rmd", package = "wizard
                   flavour = "ALL GROUPS",
                   subtitle = assessment.name),
     intermediates_dir = "./temp",
-    output_dir = schools[school,]$university,
+    output_dir = output.dir,
     output_file = paste0(schools[school,]$university,"-All-Groups-Exam-Answers-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
     quiet=TRUE,
     clean=TRUE

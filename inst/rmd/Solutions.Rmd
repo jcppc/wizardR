@@ -2,7 +2,7 @@
 title: "`r params$doctitle`"
 params:
   doctitle: "**Data Mining/Discovery Techniques**"
-  subtitle: "Knowledge Assessment *(Week X)*"
+  subtitle: "Knowledge Assessment"
   lecturer: "João Caldeira"
   email: "jcaldeira@uatlantica.pt"
   role: "Invited Professor"
@@ -53,61 +53,8 @@ tags:
 
 \newpage
 
-```{r setup, eval=FALSE, echo=FALSE}
-```
-
-
 ```{r load, warning=FALSE,message=FALSE,echo=FALSE,eval=TRUE}
 library(readxl)
-```
-
-```{r preprocess, eval = TRUE, echo=FALSE}
-# Base/Root folder where your files are located
-# Change this path to the root folder where your datasets are
-
-repository.path <- "./datasets"
-
-#Get the files in the repository folder based on the extension patterns defined
-repository.files <- list.files(path = repository.path, 
-                               pattern = '.csv$|.xls$|.xlsx$', 
-                               recursive = T, 
-                               full.names = T) 
-
-files.id <- seq(1,length(repository.files))
-files.filename <- sub(".*/", "", repository.files)
-
-files.name <- sub("\\..*", "", files.filename)
-substr(files.name, 1, 1) <- toupper(substr(files.name, 1, 1))
-
-files.folder <- sub(repository.path, "", repository.files)
-files.folder <- sub("/[^/]+$", "", files.folder)
-
-files.extension <- substring(repository.files, nchar(repository.files)-3)
-files.extension <- sub("\\.","",files.extension)
-
-files.size <- file.size(repository.files)
-files.fullpath <- repository.files
-
-
-datasets.metadata <- data.frame(id = files.id, 
-                                dataset = files.name, 
-                                filename = files.filename, 
-                                type = files.extension,
-                                size = files.size,
-                                folder = files.folder,
-                                fullpath = files.fullpath,
-                                date = Sys.time() )
-
-```
-
-
-```{r eval = FALSE, echo=FALSE}
-head(datasets.metadata)
-```
-
-
-```{r  eval = FALSE, echo=FALSE}
-tail(datasets.metadata)
 ```
 
 
@@ -119,24 +66,19 @@ print.glance <- TRUE
 print.questions <- TRUE
 print.solutions <- TRUE
 assessment.id <- params$file
-assessment.questions <- 49
 
-assessment.file <- datasets.metadata[datasets.metadata$id == assessment.id,]$fullpath
+assessment.file <- params$file #datasets.metadata[datasets.metadata$id == assessment.id,]$fullpath
 assessment <- read_excel(assessment.file)
 #assessment <- assessment[!is.na(assessment$id),]
 assessment <- assessment[assessment$enabled=="T",]
 practice <- assessment[assessment$part=="X - Practice",]
 assessment <- assessment[assessment$part!="X - Practice",]
 
-#sample <- sort(sample(1:nrow(assessment), assessment.questions, replace=F), decreasing = F)
-
-
-#assessment <- assessment[sample,]
 assessment$id <- seq(1:nrow(assessment))
 ```
 
-## Soluções
 
+## Soluções
 ```{r eval = print.questions, echo=FALSE, results='asis'}
 #cat("  \\newpage")
 #cat("  ## Questions")

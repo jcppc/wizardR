@@ -27,7 +27,11 @@ header-includes:
 - \fancyfoot[R]{\thepage}
 #abstract: This is the abstract.
 output:
+#"wizardR::render.assessments"
+  resource-folder: '`r system.file("rmd", package = "wizardR")`'
   pdf_document: 
+    includes:
+     before_body: frontpage.tex
     toc: yes
     fig_caption: yes
   html_document: 
@@ -53,10 +57,6 @@ tags:
 ---
 
 \newpage
-
-```{r setup, eval=FALSE, echo=FALSE}
-```
-
 
 ```{r load, warning=FALSE,message=FALSE,echo=FALSE,eval=TRUE}
 library(readxl)
