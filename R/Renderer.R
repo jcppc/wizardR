@@ -1,19 +1,9 @@
-#schools = data.frame(university = c("Univ. Atlântica", "ISCTE-IUL","ISTEC"),
-#                     brand = c("ua.jpg", "iscte.png", "istec.png"),
-#                     email = c("jcaldeira@uatlantica.pt","jcppc@iscte-iul.pt","joaocarlos.caldeira@my.istec.pt"),
-#                     role = c("Invited Professor","Assistant Professor","Adjunct Professor"),
-#                     class = c("**Data Mining/Discovery Techniques**","**Process Mining**","**Engenharia de Software**"),
-#                     exercise = c("Knowledge Assessment","Exam","1ª Avaliação (Parcial)"),
-#                     file = c(1,2,4))
-#
-#school <- 3
-#exam.flavours <- 4
 
-render.assessments2 <- function( assessment, number.of.questions, output.base.dir) {
 
-  #file, university, lecturer, email, role, class, assessment.name, brand, flavours,
+render.assessments <- function( assessment, number.of.questions, output.base.dir) {
 
-  output.dir <- paste0(output.base.dir,"/",assessment$university,"/")
+  entity <- assessment
+  output.dir <- paste0(output.base.dir,"/",entity$university,"/")
 
   if (!dir.exists( output.dir )) {dir.create( output.dir )}
 
@@ -23,18 +13,20 @@ render.assessments2 <- function( assessment, number.of.questions, output.base.di
   for (i in 1:assessment$flavours) {
 
     rmarkdown::render( input = system.file("rmd", "Assessment.Rmd", package = "wizardR"),
-                       params = list(brand = assessment$brand,
-                                     university = assessment$university,
-                                     doctitle = assessment$class,
-                                     file = assessment$file,
-                                     email = assessment$email,
-                                     role = assessment$role,
+                       params = list(brand = entity$brand,
+                                     university = entity$university,
+                                     doctitle = entity$class,
+                                     file = entity$file,
+                                     lecturer = entity$lecturer,
+                                     linkedin = entity$linkedin,
+                                     email = entity$email,
+                                     role = entity$role,
                                      flavour = paste0("GROUP ", i),
-                                     subtitle = assessment$assessment.name,
+                                     subtitle = entity$assessment.name,
                                      questions = number.of.questions),
                        intermediates_dir = "./temp",
                        output_dir = output.dir,
-                       output_file = paste0(assessment$university,"-Group-",i,"-Exam-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
+                       output_file = paste0(entity$university,"-Group-",i,"-Exam-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
                        #includes = rmarkdown::includes(in_header = header),
                        #pandoc_args = args,
                        #run_pandoc = TRUE,
@@ -46,11 +38,11 @@ render.assessments2 <- function( assessment, number.of.questions, output.base.di
 
 }
 
-render.assessments <- function( file, university, lecturer, email, role, class, assessment.name, brand, flavours, questions.number, output.base.dir) {
+render.assessments2 <- function( file, university, lecturer, linkedin, email, role, class, assessment.name, brand, flavours, questions.number, output.base.dir) {
 
-output.dir <- paste0(output.base.dir,"/",schools[school,]$university,"/")
+output.dir <- paste0(output.base.dir,"/",university,"/")
 
-if (!dir.exists( output.dir )) {dir.create( output.dir )}
+if (!dir.exists( output.dir )) { dir.create( output.dir ) }
 
 #header <- system.file("rmd/frontpage.tex", package = "wizardR")
 #args <- pandoc_variable_arg("cover", system.file("rmd/cover.png", package = "wizardR"))
@@ -58,18 +50,20 @@ if (!dir.exists( output.dir )) {dir.create( output.dir )}
 for (i in 1:flavours) {
 
   rmarkdown::render( input = system.file("rmd", "Assessment.Rmd", package = "wizardR"),
-    params = list(brand = schools[school,]$brand,
-                  university = schools[school,]$university,
-                  doctitle = schools[school,]$class,
-                  file = schools[school,]$file,
-                  email = schools[school,]$email,
-                  role = schools[school,]$role,
+    params = list(brand = brand,
+                  university = university,
+                  doctitle = class,
+                  file = file,
+                  lecturer = lecturer,
+                  linkedin = linkedin,
+                  email = email,
+                  role = role,
                   flavour = paste0("GROUP ", i),
                   subtitle = assessment.name,
                   questions = questions.number),
     intermediates_dir = "./temp",
     output_dir = output.dir,
-    output_file = paste0(schools[school,]$university,"-Group-",i,"-Exam-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
+    output_file = paste0(university,"-Group-",i,"-Exam-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
     #includes = rmarkdown::includes(in_header = header),
     #pandoc_args = args,
     #run_pandoc = TRUE,
@@ -82,24 +76,55 @@ for (i in 1:flavours) {
 }
 
 
-render.solutions <- function( file, university, lecturer, email, role, class, assessment.name, brand, output.base.dir ) {
+render.solutions <- function( assessment, output.base.dir) {
 
-  output.dir <- paste0(output.base.dir,"/",schools[school,]$university,"/")
+  entity <- assessment
+  output.dir <- paste0(output.base.dir,"/",entity$university,"/")
+
+  if (!dir.exists( output.dir )) {dir.create( output.dir )}
+
+  rmarkdown::render( input = system.file("rmd", "Solutions.Rmd", package = "wizardR"),
+                     params = list(brand = entity$brand,
+                                   university = entity$university,
+                                   doctitle = entity$class,
+                                   file = entity$file,
+                                   lecturer = entity$lecturer,
+                                   linkedin = entity$linkedin,
+                                   email = entity$email,
+                                   role = entity$role,
+                                   flavour = "ALL GROUPS",
+                                   subtitle = entity$assessment.name),
+                     intermediates_dir = "./temp",
+                     output_dir = output.dir,
+                     output_file = paste0(entity$university,"-All-Groups-Exam-Answers-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
+                     quiet=TRUE,
+                     clean=TRUE
+  )
+
+}
+
+
+
+render.solutions2 <- function( file, university, lecturer, linkedin, email, role, class, assessment.name, brand, output.base.dir ) {
+
+  output.dir <- paste0(output.base.dir,"/",university,"/")
 
   if (!dir.exists( output.dir )) {dir.create( output.dir )}
 
 rmarkdown::render( input = system.file("rmd", "Solutions.Rmd", package = "wizardR"),
-    params = list(brand = schools[school,]$brand,
-                  university = schools[school,]$university,
-                  doctitle = schools[school,]$class,
-                  file = schools[school,]$file,
-                  email = schools[school,]$email,
-                  role = schools[school,]$role,
+    params = list(brand = brand,
+                  university = university,
+                  doctitle = class,
+                  file = file,
+                  lecturer = lecturer,
+                  linkedin = linkedin,
+                  email = email,
+                  role = role,
                   flavour = "ALL GROUPS",
                   subtitle = assessment.name),
     intermediates_dir = "./temp",
     output_dir = output.dir,
-    output_file = paste0(schools[school,]$university,"-All-Groups-Exam-Answers-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
+    output_file = paste0(university,"-All-Groups-Exam-Answers-", format(Sys.time(), "%Y-%m-%d-%H-%M-%S"),".pdf"),
     quiet=TRUE,
     clean=TRUE
   )

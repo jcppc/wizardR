@@ -2,8 +2,11 @@ exportPattern("^[[:alpha:]]+")
 
 #Functions to export
 export(render.assessments)
+export(render.assessments2)
 export(render.solutions)
+export(render.solutions2)
 
 #Libraries to import
-import(rmarkdown)
+#import(rmarkdown)
+#import(wizardR)
 #import(fuzzymineR)

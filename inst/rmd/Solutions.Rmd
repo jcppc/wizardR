@@ -1,20 +1,19 @@
 ---
 title: "`r params$doctitle`"
 params:
-  doctitle: "**Data Mining/Discovery Techniques**"
-  subtitle: "Knowledge Assessment"
-  lecturer: "João Caldeira"
-  email: "jcaldeira@uatlantica.pt"
-  role: "Invited Professor"
-  university: "Univ. Atlântica"
-  brand: "ua.jpg"
-  flavour: "GROUP 1"
-  file: "4"
+  doctitle: ""
+  subtitle: ""
+  lecturer: ""
+  email: ""
+  role: ""
+  university: ""
+  brand: ""
+  flavour: ""
+  questions: ""
+  file: ""
+  linkedin: ""
 author: 
-- \ **`r params$lecturer`**^[`r params$role`. LinkedIn. https://www.linkedin.com/in/joao-carlos-caldeira/], [*`r params$email`*](mailto:`r params$email`), **`r params$university`**
-# name: João Caldeira^[Invited Professor. https://www.linkedin.com/in/joao-carlos-caldeira/]
-# email: jcaldeira@uatlantica.pt
-# affiliation: Univ. ATLANTICA
+- \ **`r params$lecturer`**^[`r params$role`. LinkedIn. `r params$linkedin`], [*`r params$email`*](mailto:`r params$email`), **`r params$university`**
 date: "`r format(Sys.time(), '%d %B %Y')`"
 header-includes:
 - \usepackage{fancyhdr}
