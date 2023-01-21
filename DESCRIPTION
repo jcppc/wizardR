@@ -13,5 +13,5 @@ License: GPL
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
-Imports: readxl, rmarkdown, wizardR
+Imports: readxl, rmarkdown
 Remotes: nirmalpatel/fuzzymineR
