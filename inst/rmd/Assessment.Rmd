@@ -12,6 +12,7 @@ params:
   questions: ""
   file: ""
   linkedin: ""
+  timestamp: ""
 author: 
 - \ **`r params$lecturer`**^[`r params$role`. LinkedIn. `r params$linkedin`], [*`r params$email`*](mailto:`r params$email`), **`r params$university`**
 date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -19,7 +20,7 @@ header-includes:
 - \usepackage{fancyhdr}
 - \pagestyle{fancy}
 - \fancyhead[L]{\includegraphics[width=2.5cm]{`r params$brand`}}
-- \fancyhead[C]{`r params$flavour` (`r format(Sys.time(), '%Y-%m-%d')`)}
+- \fancyhead[C]{`r params$flavour` (`r params$timestamp`)}
 - \fancyfoot[C]{`r params$doctitle`}
 - \fancyfoot[L]{Copyright@`r format(Sys.time(), '%Y')`}
 - \fancyfoot[R]{\thepage}

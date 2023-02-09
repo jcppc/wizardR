@@ -1,5 +1,13 @@
-
-
+#' Title
+#'
+#' @param assessment
+#' @param number.of.questions
+#' @param output.base.dir
+#'
+#' @return
+#' @export
+#'
+#' @examples
 render.assessments <- function( assessment, number.of.questions, output.base.dir) {
 
   entity <- assessment
@@ -22,6 +30,7 @@ render.assessments <- function( assessment, number.of.questions, output.base.dir
                                      email = entity$email,
                                      role = entity$role,
                                      flavour = paste0("GROUP ", i),
+                                     timestamp = entity$timestamp,
                                      subtitle = entity$assessment.name,
                                      questions = number.of.questions),
                        intermediates_dir = "./temp",
@@ -38,7 +47,26 @@ render.assessments <- function( assessment, number.of.questions, output.base.dir
 
 }
 
-render.assessments2 <- function( file, university, lecturer, linkedin, email, role, class, assessment.name, brand, flavours, questions.number, output.base.dir) {
+#' Title
+#'
+#' @param file
+#' @param university
+#' @param lecturer
+#' @param linkedin
+#' @param email
+#' @param role
+#' @param class
+#' @param assessment.name
+#' @param brand
+#' @param flavours
+#' @param questions.number
+#' @param output.base.dir
+#'
+#' @return
+#' @export
+#'
+#' @examples
+render.assessments2 <- function( file, university, lecturer, linkedin, email, role, class, assessment.name, brand, flavours, timestamp, questions.number, output.base.dir) {
 
 output.dir <- paste0(output.base.dir,"/",university,"/")
 
@@ -56,6 +84,7 @@ for (i in 1:flavours) {
                   file = file,
                   lecturer = lecturer,
                   linkedin = linkedin,
+                  timestamp = timestamp,
                   email = email,
                   role = role,
                   flavour = paste0("GROUP ", i),
@@ -76,6 +105,15 @@ for (i in 1:flavours) {
 }
 
 
+#' Title
+#'
+#' @param assessment
+#' @param output.base.dir
+#'
+#' @return
+#' @export
+#'
+#' @examples
 render.solutions <- function( assessment, output.base.dir) {
 
   entity <- assessment
@@ -105,6 +143,23 @@ render.solutions <- function( assessment, output.base.dir) {
 
 
 
+#' Title
+#'
+#' @param file
+#' @param university
+#' @param lecturer
+#' @param linkedin
+#' @param email
+#' @param role
+#' @param class
+#' @param assessment.name
+#' @param brand
+#' @param output.base.dir
+#'
+#' @return
+#' @export
+#'
+#' @examples
 render.solutions2 <- function( file, university, lecturer, linkedin, email, role, class, assessment.name, brand, output.base.dir ) {
 
   output.dir <- paste0(output.base.dir,"/",university,"/")
