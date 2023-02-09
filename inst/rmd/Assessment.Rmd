@@ -15,7 +15,7 @@ params:
   timestamp: ""
 author: 
 - \ **`r params$lecturer`**^[`r params$role`. LinkedIn. `r params$linkedin`], [*`r params$email`*](mailto:`r params$email`), **`r params$university`**
-date: "`r format(Sys.time(), '%d %B %Y')`"
+date: "`r params$timestamp`"
 header-includes:
 - \usepackage{fancyhdr}
 - \pagestyle{fancy}
